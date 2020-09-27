@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [КОНСТАНТИН Погудин](https://up.htmlacademy.ru/javascript/21/user/1325281).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Быков](https://htmlacademy.ru/profile/id618225).
 
 ---
 
