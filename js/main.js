@@ -20,13 +20,16 @@ var COMMENT_MESSAGES = [
 var AUTHOR_NAMES = [
   'Захар',
   'Ирина',
-  'Кирилл'
-]
-
-
-var ADRES = [
-  'photos/2.jpg',
-  'photos/25.jpg'
+  'Кирилл',
+  'Олежка',
+  'Марина',
+  'Андрей',
+  'Юра',
+  'Би 2',
+  'Леонид Агуин',
+  'Путин вв',
+  'Юзер',
+  'Павел',
 ]
 
 var createComment = function () {
@@ -65,26 +68,28 @@ fragment.appendChild(pictureElement);
 });
 
 picturesContainer.appendChild(fragment);
-// **********************
-var ferstPhoto = document.querySelector('.picture__img');
-var  userDialog = document.querySelector(`.big-picture`);
-ferstPhoto.addEventListener('click', function () {
+/*************************** */
+var userDialog = document.querySelector(`.big-picture`);
+var socialHeader = document.querySelector('.big-picture__social');
+var firstPhoto = document.querySelector('.picture__img');
+var socialComment = document.querySelector('.social__comment');
+var bigPictureImg = document.querySelector('.big-picture__img').querySelector(`img`);
+var socialCaption = socialHeader.querySelector('.social__caption');
+var socialLikes = socialHeader.querySelector('.social__likes');
+var socialText = socialComment.querySelector('.social__text');
+
+socialCaption.textContent = AUTHOR_NAMES[randomInteger(0, 11)];
+socialLikes.textContent = randomInteger(15, 200);
+bigPictureImg.src = `photos/1.jpg`;
+socialText.textContent = COMMENT_MESSAGES[randomInteger(0, 2)];
+
+firstPhoto.addEventListener('click', function () {
   userDialog.classList.remove('hidden');
 });
-var bigPicture = document.querySelector('.big-picture__img').content;
-var socialHeader = document.querySelector('.big-picture__social').content;
-var fragment = document.createDocumentFragment();
 
-photos.forEach(function (photoBig){
-  let pictureElBig = socialHeader.cloneNode(true);
-  let socialCaption = pictureElBig.querySelector('.social__caption');
-  let socialLikes = pictureElBig.querySelector('.social__likes');
-  socialCaption.textContent= photoBig.COMMENT_MESSAGES[0];
-  socialLikes.textContent = photoBig.likes;
-  fragment.appendChild(pictureElBig);
-});
 
-userDialog.appendChild(fragment);
+/*
+
 
 var showBigPhoto = function () {
 
@@ -108,4 +113,4 @@ commentLoader.classList.add(`hidden`);
 };
 
 
-
+*/
