@@ -69,6 +69,7 @@ fragment.appendChild(pictureElement);
 
 picturesContainer.appendChild(fragment);
 /*************************** */
+//Отркывание фоток на весь эеран ***
 var userDialog = document.querySelector(`.big-picture`);
 var socialHeader = document.querySelector('.big-picture__social');
 var firstPhoto = document.querySelector('.picture__img');
@@ -88,29 +89,117 @@ firstPhoto.addEventListener('click', function () {
 });
 
 
-/*
+//******* */
+//всплывание попапа/
+let fileUpload = document.querySelector(`#upload-file`);
+let uploadOverlay = document.querySelector(`.img-upload__overlay`);
+let body = document.querySelector(`body`);
+let uploadCancel = document.querySelector('.img-upload__cancel');
+let effectLevel = document.querySelector('.effect-level__pin');
+let uploadEffects = document.querySelector('.img-upload__effects');
+let uploadPreview = document.querySelector('.img-upload__preview');
+let textHashtags = uploadCancel.querySelector(`.text__hashtags`);
+let effectsRadio = uploadOverlay.querySelectorAll(`.effects__radio`);
+let scaleControlSmaller = uploadOverlay.querySelector(`.scale__control--smaller`);
+let scaleControlBigger = uploadOverlay.querySelector(`.scale__control--bigger`);
+let scaleControlValue = uploadOverlay.querySelector(`.scale__control--value`);
+const MAX_SCALE = 100;
 
 
-var showBigPhoto = function () {
+let closePopup = function () {
+  uploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
 
-let bigPictureImg = userDialog.querySelector(`.big-picture__img`).querySelector(`img`);
-bigPictureImg.src = createRandomPhoto[0].url;
+  //******* */
+//выбор фильтра/
+effectsRadio.forEach((effect) => {
+  effect.addEventListener(`change`, function () {
+    onChangeEffect(effect);
+  });
+});
 
-let bigPictureLikesCount = userDialog.querySelector(`.likes-count`);
-bigPictureLikesCount.textContent = createRandomPhoto[0].likes;
+  scaleControlValue.value = MAX_SCALE + `%`;
+  scaleControlSmaller.addEventListener(`click`, onScaleButtonSmallerPress);
+  scaleControlBigger.addEventListener(`click`, onScaleButtonBiggerPress);
+};
 
-let bigPictureCommentsCount = userDialog.querySelector(`.comments-count`);
-bigPictureCommentsCount.textContent = createRandomPhoto[0].comments.length;
+//******* */
+//Закрытие окна через ESC/
+let onPopupEscPress = function (evt) {
+  if (evt.keyCode  === 27) {
+    closePopup()}
+};
+//******* */
+//Закрытие окна на кнопку крестик/
+fileUpload.onchange = function (){
+  uploadOverlay.classList.remove('hidden');
+  body.classList.add('modal-open');
+  uploadCancel.addEventListener('click', closePopup);
+  document.addEventListener(`keydown`, onPopupEscPress);
+};
+//******* */
+//выбор фильтра/
+var filterChangeHandler = function (evt) {
+  if (evt.target.matches('input[type="radio"]')) {
+    uploadPreview.textContent = evt.target.value;
+  }
+}
+uploadEffects.addEventListener('change', filterChangeHandler);
 
-let bigPictureDescription = userDialog.querySelector(`.social__caption`);
-bigPictureDescription.textContent = createRandomPhoto[0].description;
 
-let socialCommentCount = userDialog.querySelector(`.social__comment-count`);
-socialCommentCount.classList.add(`hidden`);
 
-let commentLoader = userDialog.querySelector(`.comments-loader`);
-commentLoader.classList.add(`hidden`);
+//******* */
+//проверка хештегов на валидность/
+let errorHashtags = function () {
+  let hastagArray = textHashtags.value.split(` `).sort();
+  const re = /^#[\w]{1,19}$/;
+  let errorsCount = 0;
+  let tagLeft = ``;
+
+  if (!textHashtags.value) {
+    textHashtags.style.boxShadow = `none`;
+    textHashtags.setCustomValidity(``);
+  } else
+  {
+  if (hastagArray.length > 5) {
+    // Выводим соответствующую ошибку
+    textHashtags.setCustomValidity(`Может быть не более 5 хэштегов`);
+    errorsCount += 1;
+  }
+  else {
+    hastagArray.forEach((hashTag) => {
+      // Переводим в нижний кейс, чтобы не играл роли регистр
+      hashTag = hashTag.toLowerCase();
+      // Если тег не соответствует регулярке
+      if (!re.test(hashTag)) {
+        // Выводим ошибку
+        textHashtags.setCustomValidity(`Хештег должен соответсвовать критериям`);
+        errorsCount += 1;
+      // Иначе, если тег совпадает с предыдущим
+      } else if (hashTag === tagLeft) {
+        // Выводим соответствующую ошибку
+        textHashtags.setCustomValidity(`У вас есть повторяющиеся хэштеги`);
+        errorsCount += 1;
+        tagLeft = hashTag;
+      } else {
+        // Если ошибок нет, отменяем выделение поля красным
+        textHashtags.style.boxShadow = `none`;
+        tagLeft = hashTag;
+      }
+    });
+  }
+  if (errorsCount) {
+    // Если да, подсвечиваем поле красным
+    textHashtags.style.boxShadow = `0 0 15px red`;
+  } else {
+    // Иначе, убираем подсветку и сообщение
+    textHashtags.style.boxShadow = `none`;
+    textHashtags.setCustomValidity(``);
+  }
+  textHashtags.reportValidity();
+}
+return errorsCount;
 };
 
 
-*/
+
